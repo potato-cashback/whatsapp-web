@@ -16,6 +16,7 @@ var QRCODE = ""
 
 client.on('qr', (qr) => {
     QRCODE = qr
+    console.log('QR generated')
 });
 
 client.on('ready', () => {
@@ -84,13 +85,14 @@ app.get('/', (req, res) => {
                         document.body.querySelector("img").src = url;
                     }
                 })
-            }, 1000)
+            }, 3000)
         })
     </script>
     `)
 })
 app.get('/initialize', (req, res) => {
     client.initialize();
+    console.log('Client initialized!')
     res.send("good")
 })
 
