@@ -37,7 +37,7 @@ client.on('message', message => {
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 const cashback = (s) => {
     let coef = [0.06, 0.11]
