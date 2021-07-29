@@ -4,6 +4,7 @@ const qrcode = require('qrcode-terminal');
 const { Client } = require('whatsapp-web.js');
 const client = new Client({"puppeteer":{
     headless: true,
+    userDataDir: __dirname + '/myChromeSession',
     args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox'
