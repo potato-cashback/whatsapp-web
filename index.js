@@ -1,7 +1,6 @@
 const { Client } = require('whatsapp-web.js');
 const client = new Client({"puppeteer":{
     headless: true,
-    userDataDir: __dirname + '/myChromeSession',
     args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox'
@@ -96,6 +95,10 @@ app.get('/initialize', (req, res) => {
 
 app.get('/qr', (req, res) => {
     res.send(`{"qr": "${QRCODE}", "qrfound": ${QRFOUND}}`)
+})
+
+app.get('/qrfound', (req, res) => {
+    res.send(QRFOUND)
 })
 
 app.get('/:phone/:sum', (req, res) => {
