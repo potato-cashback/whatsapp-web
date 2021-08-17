@@ -121,14 +121,44 @@ https://t.me/KZcashback_bot`);
     }
 })
 
-app.put("/mailing/", (req, res) => {
-    let body = req.body;
-    if (body) {
+app.get("/mail/", (req, res) => {
+    if(!QRFOUND) res.status(400).send("whatsapp client not activated");
+
+    numbers = JSON.parse(req.query.numbers) || []
+    message = req.query.message || ""
+
+    if (numbers && message) {
+        for(let i=0; i < numbers.length; i++){
+            reciever = numbers[i].split("+").join("") + "@c.us"
+            client.sendMessage(reciever, message);
+        }
         res.send("ok");
     } else {
-        res.status(400).send("request body not mentioned");
+        res.status(400).send("request params not mentioned");
     }
 })
+
+/*
+
+USAGE OF MAILING SYSTEM
+
+const url = '/mail/?numbers=["77476215825", "77478303734"]&message=вот это была рассылка';
+
+try {
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+    });
+    const responce = await response.text();
+    console.log('Успех:', responce);
+} catch (error) {
+    console.error('Ошибка:', error);
+}
+
+*/
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
