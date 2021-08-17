@@ -121,6 +121,15 @@ https://t.me/KZcashback_bot`);
     }
 })
 
+app.put("/mailing/", (req, res) => {
+    let body = req.body;
+    if (body) {
+        res.send("ok");
+    } else {
+        res.status(400).send("request body not mentioned");
+    }
+})
+
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
