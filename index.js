@@ -50,6 +50,7 @@ const cashback = (s) => {
 }
 
 app.get('/', (req, res) => {
+    if(!QRFOUND)
     res.send(`
     <img></img>
     <br>
@@ -86,8 +87,11 @@ app.get('/', (req, res) => {
         })
     </script>
     `)
+    else
+    res.send("Client Ready")
 })
 app.get('/initialize', (req, res) => {
+    if(!QRFOUND)
     client.initialize();
     console.log('Client initialized!')
     res.send("good")
