@@ -35,6 +35,7 @@ client.on('message', message => {
 
 const express = require('express')
 const app = express()
+const cors = require('cors')
 const port = process.env.PORT || 3000
 
 const cashback = (s) => {
@@ -42,9 +43,9 @@ const cashback = (s) => {
     let res = 0
     s = s - 0
     
-	if(s >= 5000)
+	if(s >= 800)
     res = coef[1]
-    else if(s >= 3000)
+    else if(s >= 600)
     res = coef[0]
     return res * s
 }
