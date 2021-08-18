@@ -49,6 +49,18 @@ const cashback = (s) => {
     res = coef[0]
     return res * s
 }
+var allowlist = ['http://192.168.1.189/', 'https://potato-cashback.herokuapp.com/']
+var corsOptionsDelegate = function (req, callback) {
+    var corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+    } else {
+        corsOptions = { origin: false } // disable CORS for this request
+    }
+    callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
+app.use(cors(corsOptionsDelegate()))
 
 app.get('/', (req, res) => {
     if(!QRFOUND)
