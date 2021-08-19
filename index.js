@@ -1,4 +1,5 @@
-const { Client } = require('whatsapp-web.js');
+const { Client, MessageMedia } = require('whatsapp-web.js');
+
 const client = new Client({"puppeteer":{
     headless: true,
     args: [
@@ -34,9 +35,14 @@ client.on('message', message => {
 
 
 const express = require('express')
+
+const router = express.Router();
 const app = express()
-const cors = require('cors')
+
 const port = process.env.PORT || 3000
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 const cashback = (s) => {
     let coef = [0.06, 0.11]
@@ -49,18 +55,6 @@ const cashback = (s) => {
     res = coef[0]
     return res * s
 }
-var allowlist = ['http://192.168.1.189/', 'https://potato-cashback.herokuapp.com/']
-var corsOptionsDelegate = function (req, callback) {
-    var corsOptions;
-    if (allowlist.indexOf(req.header('Origin')) !== -1) {
-        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
-    } else {
-        corsOptions = { origin: false } // disable CORS for this request
-    }
-    callback(null, corsOptions) // callback expects two parameters: error and options
-}
-
-app.use(cors(corsOptionsDelegate()))
 
 app.get('/', (req, res) => {
     if(!QRFOUND)
@@ -138,16 +132,24 @@ https://t.me/KZcashback_bot`);
     }
 })
 
-app.get("/mail/", (req, res) => {
-    if(!QRFOUND) res.status(400).send("whatsapp client not activated");
+app.post("/mail/", (req, res) => {
+    // if(!QRFOUND) res.status(400).send("whatsapp client not activated");
 
-    numbers = JSON.parse(req.query.numbers) || []
-    message = req.query.message || ""
+    numbers = req.body.numbers || []
+    message = req.body.message || ""
+    base64Image = req.body.base64Image || ""
 
     if (numbers && message) {
         for(let i=0; i < numbers.length; i++){
             reciever = numbers[i].split("+").join("") + "@c.us"
-            client.sendMessage(reciever, message);
+            console.log(reciever)
+
+            if(base64Image){
+                media = new MessageMedia('image/png', base64Image);
+                client.sendMessage(reciever, media, {caption: message})
+            }else{
+                client.sendMessage(reciever, message);
+            }
         }
         res.send("ok");
     } else {
@@ -159,14 +161,19 @@ app.get("/mail/", (req, res) => {
 
 USAGE OF MAILING SYSTEM
 
-const url = '/mail/?numbers=["77476215825", "77478303734"]&message=вот это была рассылка';
+const url = '/mail/';
 
 try {
     const response = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+            numbers:["77476215825","77478711986","77478303734"],
+            message:"ты крыса, а я рассылка",
+            base64Image:""
+        })
     });
     const responce = await response.text();
     console.log('Успех:', responce);
