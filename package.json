@@ -4,6 +4,7 @@
   "description": "message sender to wa",
   "main": "index.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "whatsapp-web.js": "^1.14.0"
   },
