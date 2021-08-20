@@ -154,9 +154,18 @@ app.post("/mail/", (req, res) => {
     message = req.body.message || ""
     base64Image = req.body.base64Image || ""
 
-    if(typeof numbers == "string") numbers = JSON.parse(numbers)
+    
+    if(typeof numbers == "string") numbers = JSON.parse(numbers) // this thing makes into int which is bad, that's why there is shit code down here
+    try{
+        numbers[0][0]
+    }
+    catch(err){
+        numbers = [`${numbers}`]
+    }
 
-    if (numbers && message) {
+    console.log(numbers, message, base64Image)
+
+    if (numbers && message){
         for(let i=0; i < numbers.length; i++){
             reciever = numbers[i].split("+").join("") + "@c.us"
             console.log(reciever)
