@@ -45,7 +45,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const allowedOrigins = ['http://192.168.1.189/',
-                      'https://potato-cashback.herokuapp.com/'];
+                      'https://potato-cashback.herokuapp.com/',
+                      'https://test-potato-cashback.herokuapp.com/'];
 app.use(cors({
     origin: function(origin, callback){
     // allow requests with no origin 
