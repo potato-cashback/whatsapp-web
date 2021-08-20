@@ -170,7 +170,7 @@ app.post("/mail/", (req, res) => {
             reciever = numbers[i].split("+").join("") + "@c.us"
             console.log(reciever)
 
-            if(base64Image){
+            if(base64Image && base64Image != "#"){
                 media = new MessageMedia('image/png', base64Image);
                 client.sendMessage(reciever, media, {caption: message})
             }else{
