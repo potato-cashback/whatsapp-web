@@ -61,16 +61,14 @@ app.use(cors({
     }
 }));
 
-const cashback = (s) => {
-    let coef = [0.06, 0.11]
-    let res = 0
-    s = s - 0
-    
-	if(s >= 800)
-    res = coef[1]
-    else if(s >= 600)
-    res = coef[0]
-    return res * s
+const cashback = async (s) => {
+	url = `/getCashbackLogic/${s}`
+	return await fetch(url)
+	.then(r => r.text())
+	.then(r => {
+		res = parseFloat(r) * s
+		return res
+	})
 }
 
 app.get('/', (req, res) => {
@@ -155,6 +153,8 @@ app.post("/mail/", (req, res) => {
     numbers = req.body.numbers || []
     message = req.body.message || ""
     base64Image = req.body.base64Image || ""
+
+    if(typeof numbers == "string") numbers = JSON.parse(numbers)
 
     if (numbers && message) {
         for(let i=0; i < numbers.length; i++){
