@@ -127,10 +127,10 @@ app.get('/qrfound', (req, res) => {
     res.send(QRFOUND)
 })
 
-app.get('/:phone/:sum', (req, res) => {
+app.get('/:phone/:sum', async (req, res) => {
     if(QRFOUND){
         reciever = req.params.phone.split("+").join("") + "@c.us"
-        sum = cashback(req.params.sum)
+        sum = await cashback(req.params.sum)
 
         client.sendMessage(reciever, `Ура! 🎉🥳! На ваш счет добавилось ${sum}₸! 💰
 Зайдите в телеграм бота чтобы воспользоваться кешбэком
