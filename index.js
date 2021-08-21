@@ -62,7 +62,7 @@ app.use(cors({
 }));
 
 const cashback = async (s) => {
-	url = `/getCashbackLogic/${s}`
+	url = `https://potato-cashback.herokuapp.com/getCashbackLogic/${s}`
 	return await fetch(url)
 	.then(r => r.text())
 	.then(r => {
