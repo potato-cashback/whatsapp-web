@@ -1,13 +1,34 @@
+const fs = require('fs');
 const { Client, MessageMedia } = require('whatsapp-web.js');
+const SESSION_FILE_PATH = './session.json';
+
+let sessionData;
+if(fs.existsSync(SESSION_FILE_PATH)) {
+    sessionData = require(SESSION_FILE_PATH);
+}
+
 
 const client = new Client({"puppeteer":{
     headless: true,
     args: [
         '--no-sandbox', 
         '--disable-setuid-sandbox'
-    ]
+    ],
+    session: sessionData
 }});
 
+/* -------------------------------------------------------------*/ 
+
+client.on('authenticated', (session) => {
+    sessionData = session;
+    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
+        if (err) {
+            console.error(err);
+        }
+    });
+});
+
+/* -------------------------------------------------------------*/ 
 
 var QRFOUND = false
 var QRCODE = ""
@@ -32,7 +53,7 @@ client.on('message', message => {
     }
 });
 
-
+/* -------------------------------------------------------------*/ 
 
 const express = require('express')
 const app = express()
@@ -128,6 +149,8 @@ https://t.me/KZcashback_bot`);
     }
 })
 
+/* -------------------------------------------------------------*/ 
+
 app.post("/mail/", (req, res) => {
     // if(!QRFOUND) res.status(400).send("whatsapp client not activated");
 
@@ -189,7 +212,6 @@ try {
 }
 
 */
-
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
