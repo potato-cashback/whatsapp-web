@@ -144,7 +144,7 @@ app.post("/mail/", (req, res) => {
         numbers = [`${numbers}`]
     }
 
-    console.log(numbers, message, base64Image)
+    // console.log(numbers, message, base64Image)
 
     if (numbers && message){
         for(let i=0; i < numbers.length; i++){
