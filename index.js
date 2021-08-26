@@ -2,20 +2,25 @@ const fs = require('fs');
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const SESSION_FILE_PATH = './session.json';
 
+const options = {
+    puppeteer: {
+        headless: true,
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox'
+        ]
+    }
+}
+
 let sessionData;
 if(fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(SESSION_FILE_PATH);
+
+    if(sessionData)
+        options.session = sessionData
 }
 
-
-const client = new Client({"puppeteer":{
-    headless: true,
-    args: [
-        '--no-sandbox', 
-        '--disable-setuid-sandbox'
-    ],
-    session: sessionData
-}});
+const client = new Client(options);
 
 /* -------------------------------------------------------------*/ 
 
