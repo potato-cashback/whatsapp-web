@@ -131,6 +131,10 @@ app.get('/qr', (req, res) => {
 })
 
 app.get('/qrfound', (req, res) => {
+    if(!QRFOUND){
+        client.initialize();
+        console.log('Client initialized!')
+    }
     res.send(QRFOUND)
 })
 
